@@ -1,29 +1,45 @@
-# it-works! frontend
+# it-works!) — Supabase-connected frontend
 
-A responsive, text-only anonymous room chat frontend prototype.
+This is a static frontend for an anonymous, text-only room messenger. It uses Supabase Auth, Postgres RPC functions, and Realtime.
 
-## Project structure
+## 1. Configure the frontend
 
-```text
-it-works-frontend/
-├── index.html              # App screens and semantic markup
-├── assets/
-│   ├── css/
-│   │   └── styles.css      # Layout, colors, responsive styling
-│   └── js/
-│       └── app.js          # Navigation and demo interactions
-├── .gitignore
-└── README.md
+Edit `assets/js/config.js` and replace the two placeholders with:
+- Project URL from Supabase → Project Settings → Data API (or API Keys)
+- Publishable key beginning with `sb_publishable_` from Project Settings → API Keys
+
+Never place a secret or `service_role` key in frontend code.
+
+## 2. Set up the database
+
+In Supabase → SQL Editor, open a new query, paste all of `supabase/setup.sql`, and run it. This script replaces the earlier read policies and RPC functions. Review the script before running if you have data you need to preserve: it drops and recreates the named RPC functions.
+
+The original tables `rooms`, `room_members`, and `messages` must already exist as created in the earlier setup.
+
+## 3. Auth settings
+
+In Authentication → Sign In / Providers:
+- Enable **Allow anonymous sign-ins**.
+- Keep **Allow new users to sign up** enabled.
+- For username/password accounts using the username-only UI, disable **Confirm email**. These accounts use synthetic addresses at `users.it-works.invalid`; this means standard email recovery is not available. For a public production app, use real email addresses or implement a trusted server-side username mapping and account recovery.
+
+## 4. Realtime
+
+The `messages` and `room_members` tables should be in the `supabase_realtime` publication. If not, run:
+
+```sql
+alter publication supabase_realtime add table public.messages;
+alter publication supabase_realtime add table public.room_members;
 ```
 
-## Run locally
+If a table is already present, skip its `alter publication` statement.
 
-Open `index.html` in a browser, or serve this folder with a static web server. No build step is required.
+## 5. Deploy
 
-## Current limitations
+Commit the project contents to your GitHub repository. Enable GitHub Pages from Settings → Pages, using the `main` branch and `/ (root)` if desired. Wait for deployment and test with two separate browsers/devices.
 
-This is a frontend-only prototype. Rooms and messages are held in browser memory; other devices cannot share them. Account handling is demo-only and must not be used for real credentials.
+## Important limitations
 
-## Backend integration plan
-
-Keep UI and styles separate from backend code. When integrating Supabase, add a dedicated `assets/js/supabase-client.js` for client initialization and `assets/js/services/` modules for authentication, rooms, and messages. Keep authorization, atomic room capacity/color allocation, and validation enforced by database policies and server-side functions. Never put service-role keys or database passwords in frontend files.
+- The browser client uses only the publishable key; all writes are through security-definer RPC functions.
+- This is a starter implementation, not a security audit. Test room capacity, concurrent joins, account recovery, and RLS before sharing widely.
+- Anonymous identities are device/browser-specific and may be lost if browser storage is cleared.

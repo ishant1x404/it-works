@@ -1,68 +1,10 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#09090d">
-<title>it-works!)</title>
-<link rel="stylesheet" href="assets/css/styles.css">
-</head>
-<body>
-<div class="app">
-<header class="topbar">
-  <div class="brand" id="brand" aria-label="Go home">it-works<span>!)</span></div>
-  <div class="top-right"><span><i class="status-dot"></i><span id="identity">Guest · no account</span></span><button class="icon-btn" id="settingsBtn" aria-label="Settings" title="Settings"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.7 2.94-.08-.02a1.7 1.7 0 0 0-1.74.38l-.07.06h-3.4l-.03-.09a1.7 1.7 0 0 0-1.38-1.17 1.7 1.7 0 0 0-1.12.24l-.08.05-2.94-1.7.02-.08a1.7 1.7 0 0 0-.38-1.74l-.06-.07v-3.4l.09-.03a1.7 1.7 0 0 0 1.17-1.38 1.7 1.7 0 0 0-.24-1.12l-.05-.08 1.7-2.94.08.02a1.7 1.7 0 0 0 1.74-.38l.07-.06h3.4l.03.09a1.7 1.7 0 0 0 1.38 1.17 1.7 1.7 0 0 0 1.12-.24l.08-.05 2.94 1.7-.02.08a1.7 1.7 0 0 0 .38 1.74l.06.07v3.4z" transform="translate(-1 -1) scale(1.08)"/></svg></button></div>
-  <div class="settings-menu hidden" id="settingsMenu"><button id="changeName">Change display name</button><button id="clearLocal">Clear demo messages</button><button id="settingsHome">Return home</button></div>
-</header>
-<main class="main">
-  <section class="view active" id="homeView" aria-label="Home">
-    <div class="home-actions">
-      <button class="action" data-go="createRoom"><span class="symbol">＋</span><span>Create a room</span><span class="arrow">›</span></button>
-      <button class="action primary" data-go="joinRoom"><span class="symbol">→</span><span>Join a room</span><span class="arrow">›</span></button>
-      <div class="or">or</div>
-      <div class="secondary-actions"><button class="action" data-go="login"><span class="symbol">♙</span><span>Login</span><span class="arrow">›</span></button><button class="action" data-go="signup"><span class="symbol">♧</span><span>Create account</span><span class="arrow">›</span></button></div>
-      <div class="chat-note">Text-only rooms · Up to 16 people</div>
-    </div>
-  </section>
-
-  <section class="view" id="createRoomView">
-    <button class="back" data-go="homeView">← <span>Back</span></button>
-    <form class="form-card" id="createRoomForm"><h1>Create a room</h1><p class="sub">Set a custom code or leave it empty for a random one.</p>
-      <div class="field"><label for="customCode">Room code (optional)</label><div class="input-wrap"><input id="customCode" maxlength="12" autocomplete="off" placeholder="e.g. A7K2" pattern="[A-Za-z0-9_-]{3,12}"></div><div class="hint">3–12 letters, numbers, hyphens, or underscores.</div></div>
-      <div class="error" id="createError" role="status"></div><button class="btn" type="submit">Create room</button>
-    </form>
-  </section>
-
-  <section class="view" id="joinRoomView">
-    <button class="back" data-go="homeView">← <span>Back</span></button>
-    <form class="form-card" id="joinRoomForm"><h1>Join a room</h1><p class="sub">Enter the room code to join.</p>
-      <div class="field"><label for="joinCode">Room code</label><div class="input-wrap"><input id="joinCode" maxlength="12" required autocomplete="off" placeholder="e.g. A7K2"></div></div>
-      <div class="error" id="joinError" role="status"></div><button class="btn" type="submit">Join room</button>
-    </form>
-  </section>
-
-  <section class="view" id="loginView">
-    <button class="back" data-go="homeView">← <span>Back</span></button>
-    <form class="form-card" id="loginForm"><h1>Login</h1><p class="sub">Sign in to your account.</p>
-      <div class="field"><label for="loginUsername">Username</label><div class="input-wrap"><input id="loginUsername" required maxlength="24" autocomplete="username" placeholder="Username"></div></div>
-      <div class="field"><label for="loginPassword">Password</label><div class="input-wrap has-toggle"><input id="loginPassword" type="password" required autocomplete="current-password" placeholder="Password"><button class="icon-btn toggle-password" type="button" data-toggle="loginPassword" aria-label="Show password">◉</button></div></div>
-      <div class="error" id="loginError" role="status"></div><button class="btn" type="submit">Login</button><div class="or" style="margin-top:18px">or</div><button class="btn flat" id="guestFromLogin" type="button">Continue as guest</button><p class="form-foot">No account? <button class="text-btn" type="button" data-go="signup">Create account</button></p>
-    </form>
-  </section>
-
-  <section class="view" id="signupView">
-    <button class="back" data-go="homeView">← <span>Back</span></button>
-    <form class="form-card" id="signupForm"><h1>Create an account</h1><p class="sub">An account is optional.</p>
-      <div class="field"><label for="signupUsername">Username</label><div class="input-wrap"><input id="signupUsername" required minlength="3" maxlength="24" autocomplete="username" placeholder="Username" pattern="[A-Za-z0-9_]+"></div><div class="hint">3–24 letters, numbers, or underscores.</div></div>
-      <div class="field"><label for="signupPassword">Password</label><div class="input-wrap has-toggle"><input id="signupPassword" type="password" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters"><button class="icon-btn toggle-password" type="button" data-toggle="signupPassword" aria-label="Show password">◉</button></div></div>
-      <div class="field"><label for="confirmPassword">Confirm password</label><div class="input-wrap has-toggle"><input id="confirmPassword" type="password" required minlength="8" autocomplete="new-password" placeholder="Repeat password"><button class="icon-btn toggle-password" type="button" data-toggle="confirmPassword" aria-label="Show password">◉</button></div></div>
-      <div class="error" id="signupError" role="status"></div><button class="btn" type="submit">Create account</button><div class="or" style="margin-top:18px">or</div><button class="btn flat" id="guestFromSignup" type="button">Continue as guest</button><p class="form-foot">Already registered? <button class="text-btn" type="button" data-go="login">Login</button></p>
-    </form>
-  </section>
-
-  <section class="view" id="chatView" aria-label="Chat room">
-    <div class="chat-shell"><div class="chat-head"><div class="room-title">ROOM / <span id="activeRoomCode">A7K2</span></div><div class="room-tools"><span class="count" id="participantCount">1/16 people</span><button class="leave" id="leaveBtn">Leave</button></div></div><div class="messages" id="messages" aria-live="polite"></div><form class="composer" id="messageForm"><input id="messageInput" maxlength="2000" autocomplete="off" placeholder="message..." aria-label="Message"><button class="send" type="submit" aria-label="Send message"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M12 5l7 7-7 7"/></svg></button></form></div><div class="chat-note">Your color is assigned for this room.</div>
-  </section>
-</main>
-</div>
-<div class="toast hidden" id="toast" role="status"></div>
-<script src="assets/js/app.js" defer></script>
-</body></html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#09090d"><title>it-works!)</title><link rel="stylesheet" href="assets/css/styles.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="assets/js/config.js" defer></script><script src="assets/js/app.js" defer></script></head>
+<body><div class="app"><header class="topbar"><button class="brand" id="brand">it-works<span>!)</span></button><div class="top-right"><span class="status-dot"></span><span id="identity">Connecting…</span><button class="icon-btn" id="signOutBtn" hidden>Sign out</button></div></header><main class="main">
+<section class="view active" id="homeView"><div class="home-actions"><button class="action" data-go="createRoomView"><span class="symbol">＋</span><span>Create a room</span><span class="arrow">›</span></button><button class="action primary" data-go="joinRoomView"><span class="symbol">→</span><span>Join a room</span><span class="arrow">›</span></button><div class="or">or</div><div class="secondary-actions"><button class="action" data-go="loginView">Login <span class="arrow">›</span></button><button class="action" data-go="signupView">Create account <span class="arrow">›</span></button></div><div class="chat-note">Text-only rooms · Up to 16 people</div><div class="error" id="homeError"></div></div></section>
+<section class="view" id="createRoomView"><button class="back" data-go="homeView">← Back</button><form class="form-card" id="createRoomForm"><h1>Create a room</h1><p class="sub">Choose a code or leave it blank for a random one.</p><label>Room code (optional)</label><input id="customCode" maxlength="12" pattern="[A-Za-z0-9_-]{3,12}" placeholder="e.g. A7K2"><div class="error" id="createError"></div><button class="btn">Create room</button></form></section>
+<section class="view" id="joinRoomView"><button class="back" data-go="homeView">← Back</button><form class="form-card" id="joinRoomForm"><h1>Join a room</h1><p class="sub">Enter the room code.</p><label>Room code</label><input id="joinCode" required maxlength="12" placeholder="e.g. A7K2"><div class="error" id="joinError"></div><button class="btn">Join room</button></form></section>
+<section class="view" id="loginView"><button class="back" data-go="homeView">← Back</button><form class="form-card" id="loginForm"><h1>Login</h1><p class="sub">Use your username and password.</p><label>Username</label><input id="loginUsername" required minlength="3" maxlength="24" pattern="[A-Za-z0-9_]+" autocomplete="username"><label>Password</label><input id="loginPassword" type="password" required autocomplete="current-password"><div class="error" id="loginError"></div><button class="btn">Login</button><button class="btn flat" type="button" id="guestLogin">Continue as guest</button></form></section>
+<section class="view" id="signupView"><button class="back" data-go="homeView">← Back</button><form class="form-card" id="signupForm"><h1>Create account</h1><p class="sub">Accounts are optional.</p><label>Username</label><input id="signupUsername" required minlength="3" maxlength="24" pattern="[A-Za-z0-9_]+" autocomplete="username"><label>Password</label><input id="signupPassword" type="password" required minlength="8" autocomplete="new-password"><label>Confirm password</label><input id="confirmPassword" type="password" required minlength="8" autocomplete="new-password"><div class="error" id="signupError"></div><button class="btn">Create account</button><button class="btn flat" type="button" id="guestSignup">Continue as guest</button></form></section>
+<section class="view" id="chatView"><div class="chat-shell"><div class="chat-head"><div class="room-title">ROOM / <span id="activeRoomCode"></span></div><div class="room-tools"><span class="count" id="participantCount">0/16 people</span><button class="leave" id="leaveBtn">Leave</button></div></div><div class="messages" id="messages" aria-live="polite"></div><form class="composer" id="messageForm"><input id="messageInput" maxlength="2000" autocomplete="off" placeholder="message…" aria-label="Message" required><button class="send" aria-label="Send message">➜</button></form></div><div class="chat-note">Your color is assigned for this room.</div></section>
+</main></div><div class="toast hidden" id="toast" role="status"></div></body></html>
