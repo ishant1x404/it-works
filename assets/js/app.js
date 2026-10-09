@@ -5,7 +5,14 @@ let sb=null,user=null,room=null,slot=0,displayName='Guest',channel=null,toastTim
 function show(id){views.forEach(v=>$(v).classList.toggle('active',v===id));}
 function toast(s){const e=$('toast');e.textContent=s;e.classList.remove('hidden');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.add('hidden'),3200)}
 function fail(id,e){$(id).textContent=e?.message||String(e)}
-function rpc(name,args){return sb.rpc(name,args).then(({data,error})=>{if(error)throw error;return data})}
+async function rpc(name,args){
+  if(!sb){
+    throw new Error('Still connecting to the server. Please wait and try again.');
+  }
+  const {data,error}=await sb.rpc(name,args);
+  if(error)throw error;
+  return data;
+}
 function userLabel(){ $('identity').textContent=user?(user.is_anonymous?'Guest':displayName):'Not signed in';$('signOutBtn').hidden=!user; }
 function color(slotNo){return palette[Number(slotNo)]||palette[0]}
 function addMessage(m){const row=document.createElement('div');row.className='message';const dot=document.createElement('span');dot.className='message-dot';dot.style.background=m.color||color(m.color_slot);const body=document.createElement('div'),meta=document.createElement('div');meta.className='message-meta';const name=document.createElement('span');name.className='message-name';name.style.color=m.color||color(m.color_slot);name.textContent=m.display_name||m.name||'Guest';const time=document.createElement('span');time.className='message-time';time.textContent=new Date(m.created_at||m.createdAt||Date.now()).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});meta.append(name,time);const text=document.createElement('div');text.className='message-text';text.textContent=m.body||m.text||'';body.append(meta,text);row.append(dot,body);$('messages').append(row)}
